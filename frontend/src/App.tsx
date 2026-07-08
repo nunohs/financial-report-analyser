@@ -3,6 +3,7 @@ import UploadScreen from "./components/UploadScreen"
 import ChatScreen from "./components/ChatScreen"
 
 type AppState = "upload" | "loading" | "ready"
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 function App() {
   const [appState, setAppState] = useState<AppState>("upload")
@@ -17,7 +18,7 @@ function App() {
     formData.append("file", file)
 
     try {
-      const res = await fetch("http://localhost:8000/upload", {
+      const res = await fetch(`${API_URL}/upload`, {
         method: "POST",
         body: formData,
       })
@@ -28,7 +29,7 @@ function App() {
       }
 
       // Fetch summary after successful upload
-      const summaryRes = await fetch("http://localhost:8000/summary")
+      const summaryRes = await fetch(`${API_URL}/summary`)
       const summaryData = await summaryRes.json()
       setSummary(summaryData.summary)
       setAppState("ready")
