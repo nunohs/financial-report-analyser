@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import UploadScreen from "./components/UploadScreen"
 import ChatScreen from "./components/ChatScreen"
 
@@ -9,6 +9,11 @@ function App() {
   const [appState, setAppState] = useState<AppState>("upload")
   const [summary, setSummary] = useState("")
   const [error, setError] = useState("")
+
+  // Wake up the backend as soon as the page loads
+  useEffect(() => {
+    fetch(`${API_URL}/health`).catch(() => {})
+  }, [])
 
   const handleUpload = async (file: File) => {
     setAppState("loading")
